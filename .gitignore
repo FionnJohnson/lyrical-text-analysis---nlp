@@ -1,5 +1,6 @@
 .venv/
 .idea/
 data/raw/
+/practice
 __pycache__/
 *.pyc
