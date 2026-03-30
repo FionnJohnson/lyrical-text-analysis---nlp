@@ -3,9 +3,8 @@ import os
 
 songs = []
 unicode = ["\u2005", "\u205f"]
-
-
 rows = []
+
 
 # Exclusion list - (removing rows/text files manually - prologues, remixes, messages, poems )
 files_to_remove = ["1989_TaylorsVersion__Prologue_", "Forever_Always_PianoVersion__TaylorsVersion_",
@@ -19,6 +18,7 @@ albums = ["1989_TaylorsVersion_", "Evermore", "Fearless_TaylorsVersion_", "Folkl
           "Midnights_TheTillDawnEdition_", "Red_TaylorsVersion_", "Reputation", "SpeakNow_TaylorsVersion_",
           "TaylorSwift", "THETORTUREDPOETSDEPARTMENT_THEANTHOLOGY"]
 
+# Nested iteration, albums > songs
 for album in albums:
 
     album_path = os.path.join("../data/raw/Albums/", album)
@@ -27,8 +27,6 @@ for album in albums:
     for song in album_songs:
         full_path = os.path.join(album_path, song)
         song_lyrics = []
-
-        # print(album)
 
         song_title = song[:-4]
 
@@ -71,9 +69,8 @@ rename_albums = {
     '1989_TaylorsVersion_': '1989 (TV)'
 }
 
-# Apply it to the song_df once and for all
 song_df['album'] = song_df['album'].replace(rename_albums)
-
 # print(song_df.head())
 
+# saving the final cleaned dataset to the processed data folder
 song_df.to_csv("../data/processed/processed_song_data.csv", index=False)
