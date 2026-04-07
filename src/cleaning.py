@@ -61,7 +61,7 @@ for album in albums:
 song_df = pd.DataFrame(rows, columns=["album", "song", "lyrics"])
 
 rename_albums = {
-    'THETORTUREDPOETSDEPARTMENT_THEANTHOLOGY': 'TTPD_THEANTHOLOGY',
+    'THETORTUREDPOETSDEPARTMENT_THEANTHOLOGY': 'TTPD',
     'Midnights_TheTillDawnEdition_': 'Midnights',
     'Fearless_TaylorsVersion_': 'Fearless (TV)',
     'SpeakNow_TaylorsVersion_': 'Speak Now (TV)',
