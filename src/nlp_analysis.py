@@ -4,10 +4,14 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from collections import Counter
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+import re
 
 
 stop_words = set(stopwords.words('english'))
 analyzer = SentimentIntensityAnalyzer()
+
+from nltk.stem import WordNetLemmatizer
+lemmatizer = WordNetLemmatizer()
 
 
 # Joins song lyrics into one big string
@@ -60,3 +64,17 @@ def get_sentiment(text):
     sentiment = score['compound']
     return sentiment
 
+# Calculates vocabulary richness using the first 500 words from each album
+def type_token_ratio(lyrics):
+    filtered_lyrics = []
+    for word in lyrics:
+        cleaned_word = re.sub(r'[^a-zA-Z]', '', word).lower()
+        if cleaned_word != "":
+            filtered_lyrics.append(cleaned_word)
+
+    sample_size = 500
+    lyric_sample = filtered_lyrics[:sample_size]
+    lemmatized_sample = [lemmatizer.lemmatize(word) for word in lyric_sample]
+    unique_words = set(lemmatized_sample)
+
+    return len(unique_words) / sample_size
