@@ -13,6 +13,9 @@ analyzer = SentimentIntensityAnalyzer()
 from nltk.stem import WordNetLemmatizer
 lemmatizer = WordNetLemmatizer()
 
+from transformers import pipeline
+classifier = pipeline("sentiment-analysis")
+
 
 # Joins song lyrics into one big string
 def join_lyrics(album_series):
@@ -58,12 +61,6 @@ def top_nouns(lemmatized_tokens):
     return Counter(interesting_words).most_common(12)
 
 
-# Calculates and returns the sentiment score from a text
-def get_sentiment(text):
-    score = analyzer.polarity_scores(text)
-    sentiment = score['compound']
-    return sentiment
-
 # Calculates vocabulary richness using the first 500 words from each album
 def type_token_ratio(lyrics):
     filtered_lyrics = []
@@ -78,3 +75,32 @@ def type_token_ratio(lyrics):
     unique_words = set(lemmatized_sample)
 
     return len(unique_words) / sample_size
+
+
+# --- Sentiment analysis --- #
+
+# Calculates and returns the VADER sentiment score from a text
+def get_sentiment(text):
+    score = analyzer.polarity_scores(text)
+    sentiment = score['compound']
+    return sentiment
+
+
+# BERT goes here
+def bert_sent_analysis(lyrics):
+    words = lyrics.split()
+    this_chunk = []
+
+    for i in range(0, len(words), 400):
+        chunk = words[i:i + 400]
+
+        prediction = classifier(chunk, truncation=True)[0]
+        score = prediction['score']
+
+        if prediction['label'] == 'NEGATIVE':
+            score *= -1
+
+        this_chunk.append(score)
+
+    song_avg = sum(this_chunk) / len(this_chunk)
+    return song_avg
