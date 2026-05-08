@@ -1,9 +1,11 @@
+tqdm
 pandas
 numpy
 matplotlib
 nltk
 scikit-learn
 seaborn
+transformers
 
 
 # pip install -r requirements.txt
